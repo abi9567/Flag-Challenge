@@ -26,18 +26,21 @@ fun SplashScreen(
     LaunchedEffect(key1 = Unit) {
         delay(timeMillis = 2000)
         if (gameSettings?.isGamePending == true) {
-            navController.navigateWithPop(route = Screens.QuestionScreen.route,
+            navController.navigateWithPop(
+                route = Screens.QuestionScreen.route,
                 popUpRoute = Screens.SplashScreen.route
             )
             return@LaunchedEffect
         }
 
-        navController.navigateWithPop(route = Screens.TimerScreen.route,
+        navController.navigateWithPop(
+            route = Screens.TimerScreen.route,
             popUpRoute = Screens.SplashScreen.route
         )
     }
 
-    Box(modifier = Modifier.fillMaxSize(),
+    Box(
+        modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator(color = AppBarColor)

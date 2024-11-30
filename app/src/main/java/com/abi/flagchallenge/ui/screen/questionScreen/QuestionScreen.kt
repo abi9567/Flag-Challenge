@@ -30,25 +30,28 @@ fun QuestionScreen(
     }
 
     CustomScaffold { paddingValues ->
-        Column(modifier = Modifier
-            .padding(paddingValues = paddingValues)
-            .fillMaxSize(),
+        Column(
+            modifier = Modifier
+                .padding(paddingValues = paddingValues)
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            when(currentScreen) {
+            when (currentScreen) {
                 CurrentScreen.QuestionScreen -> {
                     QuestionView(viewModel = viewModel)
                 }
+
                 CurrentScreen.GameOverScreen -> {
                     GameOverScreen(viewModel = viewModel,
                         onRestartGame = {
                             scope.launch {
                                 viewModel.saveQuestionDetailsToDataStore()
-                                navController.navigateWithPop(route = Screens.TimerScreen.route,
+                                navController.navigateWithPop(
+                                    route = Screens.TimerScreen.route,
                                     popUpRoute = Screens.QuestionScreen.route
                                 )
                             }
-                    })
+                        })
                 }
             }
         }

@@ -26,7 +26,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,7 +36,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -55,15 +53,17 @@ import com.abi.flagchallenge.ui.theme.WrongAnswerColor
 @Composable
 fun OptionSelectionButton(
     modifier: Modifier = Modifier,
-    isSelected : Boolean,
-    isRightAnswer : Boolean?,
-    isWrongAnswer : Boolean?,
-    onClick : () -> Unit,
-    countryName : String?
+    isSelected: Boolean,
+    isRightAnswer: Boolean?,
+    isWrongAnswer: Boolean?,
+    onClick: () -> Unit,
+    countryName: String?
 ) {
-    Column(modifier = modifier
-        .fillMaxWidth()
-        .animateContentSize()) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .animateContentSize()
+    ) {
         Row(modifier = Modifier
             .clip(shape = RoundedCornerShape(size = dimensionResource(id = R.dimen.margin_normal)))
             .clickable { onClick() }
@@ -75,7 +75,8 @@ fun OptionSelectionButton(
             .padding(all = dimensionResource(id = R.dimen.margin_normal))
             .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = countryName ?: "",
+            Text(
+                text = countryName ?: "",
                 style = MaterialTheme.typography.labelLarge,
                 color = if (isSelected) Color.White else BorderColor,
                 maxLines = 1,
@@ -84,7 +85,8 @@ fun OptionSelectionButton(
         }
 
         AnimatedVisibility(visible = isRightAnswer == true) {
-            Text(text = stringResource(id = R.string.right),
+            Text(
+                text = stringResource(id = R.string.right),
                 style = TextStyle(fontSize = 14.sp),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -93,7 +95,8 @@ fun OptionSelectionButton(
         }
 
         AnimatedVisibility(visible = isWrongAnswer == true) {
-            Text(text = stringResource(id = R.string.wrong),
+            Text(
+                text = stringResource(id = R.string.wrong),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 style = TextStyle(fontSize = 14.sp),
@@ -104,22 +107,25 @@ fun OptionSelectionButton(
 }
 
 @Composable
-fun QuestionNumber(questionNumber : Int?) {
-    Box(modifier = Modifier
-        .clip(shape = RoundedCornerShape(topEnd = 8.dp, bottomEnd = 8.dp))
-        .background(brush = Brush.linearGradient(colors = QuestionNumberBackgroundColors))
-        .padding(
-            horizontal = dimensionResource(id = R.dimen.margin_large),
-            vertical = dimensionResource(id = R.dimen.margin_normal)
-        ),
+fun QuestionNumber(questionNumber: Int?) {
+    Box(
+        modifier = Modifier
+            .clip(shape = RoundedCornerShape(topEnd = 8.dp, bottomEnd = 8.dp))
+            .background(brush = Brush.linearGradient(colors = QuestionNumberBackgroundColors))
+            .padding(
+                horizontal = dimensionResource(id = R.dimen.margin_large),
+                vertical = dimensionResource(id = R.dimen.margin_normal)
+            ),
         contentAlignment = Alignment.Center
     ) {
-        Box(modifier = Modifier
-            .clip(shape = CircleShape)
-            .background(color = AppBarColor)
-            .size(size = 40.dp), contentAlignment = Alignment.Center
+        Box(
+            modifier = Modifier
+                .clip(shape = CircleShape)
+                .background(color = AppBarColor)
+                .size(size = 40.dp), contentAlignment = Alignment.Center
         ) {
-            Text(text = "${questionNumber ?: 0}",
+            Text(
+                text = "${questionNumber ?: 0}",
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.White
             )
@@ -128,56 +134,66 @@ fun QuestionNumber(questionNumber : Int?) {
 }
 
 @Composable
-fun QuestionComponent(questionNumber: Int?,
-                      questions: Questions?,
-                      isTimerStopped : Boolean,
-                      selectedOptionId : Int?,
-                      selectedAnswer : (id : Int?) -> Unit) {
+fun QuestionComponent(
+    questionNumber: Int?,
+    questions: Questions?,
+    isTimerStopped: Boolean,
+    selectedOptionId: Int?,
+    selectedAnswer: (id: Int?) -> Unit
+) {
 
     val firstOption = questions?.countries?.getOrNull(index = 0)
     val secondOption = questions?.countries?.getOrNull(index = 1)
     val thirdOption = questions?.countries?.getOrNull(index = 2)
     val fourthOption = questions?.countries?.getOrNull(index = 3)
 
-    Column(modifier = Modifier
-        .background(
-            color = BackgroundColor,
-            shape = RoundedCornerShape(size = dimensionResource(id = R.dimen.margin_normal))
-        )
-        .padding(vertical = dimensionResource(id = R.dimen.margin_large))
-        .fillMaxWidth()
+    Column(
+        modifier = Modifier
+            .background(
+                color = BackgroundColor,
+                shape = RoundedCornerShape(size = dimensionResource(id = R.dimen.margin_normal))
+            )
+            .padding(vertical = dimensionResource(id = R.dimen.margin_large))
+            .fillMaxWidth()
     ) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             QuestionNumber(questionNumber = questionNumber)
             WidthSpacer(width = dimensionResource(id = R.dimen.margin_large))
 
-            Text(text = stringResource(id = R.string.guess_the_flag),
+            Text(
+                text = stringResource(id = R.string.guess_the_flag),
                 style = MaterialTheme.typography.titleMedium
             )
         }
         HeightSpacer(height = dimensionResource(id = R.dimen.margin_large))
 
-        Row(modifier = Modifier
-            .padding(horizontal = dimensionResource(id = R.dimen.margin_large))
-            .fillMaxWidth()
-            .animateContentSize(),
+        Row(
+            modifier = Modifier
+                .padding(horizontal = dimensionResource(id = R.dimen.margin_large))
+                .fillMaxWidth()
+                .animateContentSize(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             AnimatedVisibility(visibleState = remember(questionNumber) {
-                MutableTransitionState(initialState = false).apply { targetState = true } },
+                MutableTransitionState(initialState = false).apply { targetState = true }
+            },
                 enter = slideInHorizontally { -it }, exit = slideOutHorizontally { -it }
             ) {
-                Box(modifier = Modifier
-                    .background(
-                        color = BackgroundColor, shape = RoundedCornerShape(
-                            size = dimensionResource(
-                                id = R.dimen.margin_normal
+                Box(
+                    modifier = Modifier
+                        .background(
+                            color = BackgroundColor, shape = RoundedCornerShape(
+                                size = dimensionResource(
+                                    id = R.dimen.margin_normal
+                                )
                             )
                         )
-                    )
-                    .padding(all = dimensionResource(id = R.dimen.margin_normal))
+                        .padding(all = dimensionResource(id = R.dimen.margin_normal))
                 ) {
-                    Image(painter = painterResource(id = questions?.questionFlag ?: R.drawable.ic_launcher_background),
+                    Image(
+                        painter = painterResource(
+                            id = questions?.questionFlag ?: R.drawable.ic_launcher_background
+                        ),
                         modifier = Modifier
                             .width(width = 70.dp)
                             .height(height = 50.dp),
@@ -187,17 +203,20 @@ fun QuestionComponent(questionNumber: Int?,
             }
 
             AnimatedVisibility(visibleState = remember(questionNumber) {
-                MutableTransitionState(initialState = false).apply { targetState = true } },
+                MutableTransitionState(initialState = false).apply { targetState = true }
+            },
                 enter = slideInHorizontally { it }, exit = slideOutHorizontally { it }
             ) {
-                Column(modifier = Modifier
-                    .padding(horizontal = dimensionResource(id = R.dimen.margin_large))
-                    .fillMaxWidth(),
+                Column(
+                    modifier = Modifier
+                        .padding(horizontal = dimensionResource(id = R.dimen.margin_large))
+                        .fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(space = dimensionResource(id = R.dimen.margin_large))
                 ) {
-                    Row(modifier = Modifier
-                        .height(intrinsicSize = IntrinsicSize.Max)
-                        .fillMaxWidth(),
+                    Row(
+                        modifier = Modifier
+                            .height(intrinsicSize = IntrinsicSize.Max)
+                            .fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(space = dimensionResource(id = R.dimen.margin_normal))
                     ) {
                         OptionSelectionButton(modifier = Modifier
@@ -246,9 +265,10 @@ fun QuestionComponent(questionNumber: Int?,
 
                     }
 
-                    Row(modifier = Modifier
-                        .height(intrinsicSize = IntrinsicSize.Max)
-                        .fillMaxWidth(),
+                    Row(
+                        modifier = Modifier
+                            .height(intrinsicSize = IntrinsicSize.Max)
+                            .fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(space = dimensionResource(id = R.dimen.margin_normal))
                     ) {
                         OptionSelectionButton(modifier = Modifier
@@ -303,9 +323,10 @@ fun QuestionComponent(questionNumber: Int?,
 
 @Composable
 fun LoadingNextQuestion(
-    remainingTime : Int?
+    remainingTime: Int?
 ) {
-    Box(modifier = Modifier,
+    Box(
+        modifier = Modifier,
         contentAlignment = Alignment.Center
     ) {
         CircularProgressIndicator(
@@ -317,16 +338,18 @@ fun LoadingNextQuestion(
 
 @Composable
 fun RemainingTime(remainingTime: String?) {
-    Box(modifier = Modifier
-        .clip(shape = RoundedCornerShape(size = 8.dp))
-        .background(brush = Brush.linearGradient(colors = QuestionNumberBackgroundColors))
-        .padding(
-            horizontal = dimensionResource(id = R.dimen.margin_large),
-            vertical = dimensionResource(id = R.dimen.margin_normal)
-        ),
+    Box(
+        modifier = Modifier
+            .clip(shape = RoundedCornerShape(size = 8.dp))
+            .background(brush = Brush.linearGradient(colors = QuestionNumberBackgroundColors))
+            .padding(
+                horizontal = dimensionResource(id = R.dimen.margin_large),
+                vertical = dimensionResource(id = R.dimen.margin_normal)
+            ),
         contentAlignment = Alignment.Center
     ) {
-        Text(text = remainingTime ?: "",
+        Text(
+            text = remainingTime ?: "",
             style = MaterialTheme.typography.bodyMedium,
             color = Color.White
         )

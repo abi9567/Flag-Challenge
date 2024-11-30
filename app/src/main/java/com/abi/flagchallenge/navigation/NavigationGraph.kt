@@ -1,7 +1,7 @@
 package com.abi.flagchallenge.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -12,8 +12,9 @@ import com.abi.flagchallenge.ui.screen.timerScreen.TimerScreen
 import com.abi.flagchallenge.ui.screen.timerScreen.TimerScreenViewModel
 
 @Composable
-fun NavigationGraph(navController: NavHostController,
-                    questionViewModel : QuestionViewModel
+fun NavigationGraph(
+    navController: NavHostController,
+    questionViewModel: QuestionViewModel
 ) {
     NavHost(navController = navController, startDestination = Screens.SplashScreen.route) {
 
@@ -22,7 +23,7 @@ fun NavigationGraph(navController: NavHostController,
         }
 
         composable(route = Screens.TimerScreen.route) {
-            val viewModel : TimerScreenViewModel = hiltViewModel()
+            val viewModel: TimerScreenViewModel = viewModel()
             TimerScreen(viewModel = viewModel, navController = navController)
         }
 

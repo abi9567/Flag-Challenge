@@ -3,11 +3,9 @@ package com.abi.flagchallenge.ui.screen.timerScreen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -35,7 +33,7 @@ import com.abi.flagchallenge.ui.common.HeightSpacer
 import com.abi.flagchallenge.ui.theme.BackgroundColor
 
 @Composable
-fun CountdownPickerView(title : String, onValueChange : (Int) -> Unit) {
+fun CountdownPickerView(title: String, onValueChange: (Int) -> Unit) {
     var text by remember { mutableStateOf(value = "") }
     val focusManager = LocalFocusManager.current
 
@@ -44,17 +42,28 @@ fun CountdownPickerView(title : String, onValueChange : (Int) -> Unit) {
         HeightSpacer(height = dimensionResource(id = R.dimen.margin_normal))
         OutlinedTextField(value = text,
             shape = RoundedCornerShape(size = dimensionResource(id = R.dimen.margin_large)),
-            textStyle = TextStyle(fontSize = 20.sp, fontWeight = W600, textAlign = TextAlign.Center),
+            textStyle = TextStyle(
+                fontSize = 20.sp,
+                fontWeight = W600,
+                textAlign = TextAlign.Center
+            ),
             singleLine = true,
             placeholder = {
-                Text(text = "00",
-                    style = TextStyle(fontSize = 20.sp, fontWeight = W600, textAlign = TextAlign.Center),
-                    color = Color.Gray.copy(alpha = 0.45F))
+                Text(
+                    text = "00",
+                    style = TextStyle(
+                        fontSize = 20.sp,
+                        fontWeight = W600,
+                        textAlign = TextAlign.Center
+                    ),
+                    color = Color.Gray.copy(alpha = 0.45F)
+                )
             },
             keyboardActions = KeyboardActions(onDone = {
                 focusManager.clearFocus()
             }),
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done,
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Done,
                 keyboardType = KeyboardType.NumberPassword
             ), colors = OutlinedTextFieldDefaults.colors(
                 focusedContainerColor = BackgroundColor,

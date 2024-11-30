@@ -18,28 +18,32 @@ import androidx.compose.ui.text.font.FontWeight.Companion.W700
 import androidx.compose.ui.unit.sp
 import com.abi.flagchallenge.R
 import com.abi.flagchallenge.extenstions.formatCountDownTimerWithHour
-import com.abi.flagchallenge.extenstions.formatCountdownTimer
 import com.abi.flagchallenge.ui.theme.BackgroundColor
 
 @Composable
 fun CountDownView(viewModel: TimerScreenViewModel) {
 
     val remainingTime by viewModel.countDownTimer.collectAsState(initial = 0L)
-    
-    Column(modifier = Modifier
-        .background(color = BackgroundColor)
-        .padding(vertical = dimensionResource(id = R.dimen.margin_xl))
-        .fillMaxWidth(),
+
+    Column(
+        modifier = Modifier
+            .background(color = BackgroundColor)
+            .padding(vertical = dimensionResource(id = R.dimen.margin_xl))
+            .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(space = dimensionResource(id = R.dimen.margin_xl))
     ) {
-        Text(text = stringResource(id = R.string.challenge_will_start_in),
+        Text(
+            text = stringResource(id = R.string.challenge_will_start_in),
             style = TextStyle(fontSize = 18.sp)
         )
 
-        Text(text = remainingTime.formatCountDownTimerWithHour(),
-            style = TextStyle(fontSize = 20.sp,
-                fontWeight = W700)
+        Text(
+            text = remainingTime.formatCountDownTimerWithHour(),
+            style = TextStyle(
+                fontSize = 20.sp,
+                fontWeight = W700
             )
+        )
     }
 }

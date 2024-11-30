@@ -17,8 +17,8 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val questionViewModel : QuestionViewModel by viewModels()
-    private lateinit var navController : NavHostController
+    private val questionViewModel: QuestionViewModel by viewModels()
+    private lateinit var navController: NavHostController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +26,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             navController = rememberNavController()
             FlagChallengeTheme {
-                NavigationGraph(navController = navController,
+                NavigationGraph(
+                    navController = navController,
                     questionViewModel = questionViewModel
                 )
             }

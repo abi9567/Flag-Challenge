@@ -1,35 +1,31 @@
 package com.abi.flagchallenge.ui.screen.timerScreen
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import com.abi.flagchallenge.enums.TimerCurrentScreen
-import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.util.Timer
 import java.util.TimerTask
-import javax.inject.Inject
 
-@HiltViewModel
-class TimerScreenViewModel @Inject constructor (@ApplicationContext private val context : Context) : ViewModel() {
+class TimerScreenViewModel : ViewModel() {
 
     private val _currentScreen = MutableStateFlow(value = TimerCurrentScreen.TimeSelectionScreen)
-    val currentScreen : StateFlow<TimerCurrentScreen> = _currentScreen.asStateFlow()
+    val currentScreen: StateFlow<TimerCurrentScreen> = _currentScreen.asStateFlow()
 
     private val _countDownTimer = MutableStateFlow<Long?>(value = null)
-    val countDownTimer : StateFlow<Long?> = _countDownTimer.asStateFlow()
+    val countDownTimer: StateFlow<Long?> = _countDownTimer.asStateFlow()
 
-    private var timer : Timer? = null
+    private var timer: Timer? = null
 
 
-    private fun setCurrentScreen(screen : TimerCurrentScreen) {
+    private fun setCurrentScreen(screen: TimerCurrentScreen) {
         _currentScreen.value = screen
     }
 
-    fun setCountDownTimer(hour : Int, minute : Int, seconds : Int) {
-        val totalTimeInLong = ((hour.toLong() * 3600) + (minute.toLong() * 60) + (seconds.toLong())) * 1000L
+    fun setCountDownTimer(hour: Int, minute: Int, seconds: Int) {
+        val totalTimeInLong =
+            ((hour.toLong() * 3600) + (minute.toLong() * 60) + (seconds.toLong())) * 1000L
         _countDownTimer.value = totalTimeInLong
         setCurrentScreen(screen = TimerCurrentScreen.CountDownScreen)
         startTimer()
@@ -38,7 +34,7 @@ class TimerScreenViewModel @Inject constructor (@ApplicationContext private val 
     private fun startTimer() {
         if (timer != null) return
         timer = Timer()
-        timer?.schedule(object: TimerTask() {
+        timer?.schedule(object : TimerTask() {
             override fun run() {
                 if ((_countDownTimer.value ?: 0L) > 0) {
                     _countDownTimer.value = (_countDownTimer.value ?: 0L) - 1000L

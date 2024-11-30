@@ -23,10 +23,12 @@ fun QuestionView(viewModel: QuestionViewModel) {
     val nextQuestionCountdownTimer by viewModel.nextQuestionCountdownTimer.collectAsState(initial = 10)
     val selectedOptionId by viewModel.selectedOptionId.collectAsState()
 
-    Column(modifier = Modifier.fillMaxWidth(),
+    Column(
+        modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        QuestionComponent(questionNumber = currentQuestionNumber.plus(1),
+        QuestionComponent(
+            questionNumber = currentQuestionNumber.plus(1),
             questions = currentQuestion,
             selectedOptionId = selectedOptionId,
             isTimerStopped = timeLeftForAnswer == 0L,
@@ -39,7 +41,7 @@ fun QuestionView(viewModel: QuestionViewModel) {
             RemainingTime(remainingTime = timeLeftForAnswer.formatCountdownTimer())
         }
 
-        AnimatedVisibility (visible = isLoading) {
+        AnimatedVisibility(visible = isLoading) {
             LoadingNextQuestion(
                 remainingTime = nextQuestionCountdownTimer
             )

@@ -7,12 +7,12 @@ import com.google.gson.annotations.SerializedName
 data class Questions(
 
     @SerializedName("answer_id")
-    val answerId : Int?,
+    val answerId: Int?,
 
-    @DrawableRes val questionFlag : Int,
+    @DrawableRes val questionFlag: Int,
 
     @SerializedName("countries")
-    val countries : List<Countries>
+    val countries: List<Countries>
 ) {
     companion object {
         val QUESTIONS = listOf(
@@ -20,7 +20,7 @@ data class Questions(
                 answerId = 160,
                 questionFlag = R.drawable.ic_newzland,
                 countries = listOf(
-                    Countries("Bosnia and Herzegovina",29),
+                    Countries("Bosnia and Herzegovina", 29),
                     Countries("Mauritania", 142),
                     Countries("Chile", 45),
                     Countries("New Zealand", 160)

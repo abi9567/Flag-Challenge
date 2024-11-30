@@ -19,7 +19,6 @@ import com.abi.flagchallenge.R
 import com.abi.flagchallenge.ui.common.HeightSpacer
 import com.abi.flagchallenge.ui.common.WidthSpacer
 import com.abi.flagchallenge.ui.theme.AppBarColor
-import kotlin.math.min
 
 @Composable
 fun TimePickerView(
@@ -29,9 +28,10 @@ fun TimePickerView(
     var minute by remember { mutableIntStateOf(value = 0) }
     var seconds by remember { mutableIntStateOf(value = 0) }
 
-    Row(modifier = Modifier
-        .padding(top = dimensionResource(id = R.dimen.margin_large))
-        .fillMaxWidth(),
+    Row(
+        modifier = Modifier
+            .padding(top = dimensionResource(id = R.dimen.margin_large))
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
     ) {
         CountdownPickerView(title = "Hour",
@@ -41,7 +41,7 @@ fun TimePickerView(
         WidthSpacer(width = dimensionResource(id = R.dimen.margin_xl))
 
         CountdownPickerView(title = "Minute",
-            onValueChange = { minute = it}
+            onValueChange = { minute = it }
         )
 
         WidthSpacer(width = dimensionResource(id = R.dimen.margin_xl))
@@ -53,11 +53,13 @@ fun TimePickerView(
 
     HeightSpacer(height = dimensionResource(id = R.dimen.margin_large))
 
-    Button(onClick = {
-        if (hour ==0 && minute == 0 && seconds == 0) return@Button
-        viewModel.setCountDownTimer(hour = hour, minute = minute, seconds = seconds)
-    },
-        colors = ButtonDefaults.buttonColors(containerColor = AppBarColor)) {
+    Button(
+        onClick = {
+            if (hour == 0 && minute == 0 && seconds == 0) return@Button
+            viewModel.setCountDownTimer(hour = hour, minute = minute, seconds = seconds)
+        },
+        colors = ButtonDefaults.buttonColors(containerColor = AppBarColor)
+    ) {
         Text(text = "Save", color = Color.White)
     }
 }

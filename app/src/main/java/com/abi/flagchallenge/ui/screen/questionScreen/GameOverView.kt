@@ -25,30 +25,35 @@ import com.abi.flagchallenge.ui.theme.AppBarColor
 @Composable
 fun GameOverScreen(
     viewModel: QuestionViewModel,
-    onRestartGame : () -> Unit
+    onRestartGame: () -> Unit
 ) {
     val score by viewModel.gameScore.collectAsState()
 
-    Column(modifier = Modifier
-        .padding(vertical = dimensionResource(id = R.dimen.margin_large))
-        .fillMaxWidth(),
+    Column(
+        modifier = Modifier
+            .padding(vertical = dimensionResource(id = R.dimen.margin_large))
+            .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = stringResource(id = R.string.game_over),
+        Text(
+            text = stringResource(id = R.string.game_over),
             style = MaterialTheme.typography.displaySmall
         )
 
-        Row(modifier = Modifier.fillMaxWidth(),
+        Row(
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = stringResource(id = R.string.score),
+            Text(
+                text = stringResource(id = R.string.score),
                 style = MaterialTheme.typography.titleLarge,
                 color = AppBarColor
             )
 
-            Text(text = " : $score/15",
+            Text(
+                text = " : $score/15",
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.W700
             )
@@ -56,10 +61,12 @@ fun GameOverScreen(
 
         HeightSpacer(height = dimensionResource(id = R.dimen.margin_large))
 
-        Button(onClick = onRestartGame,
+        Button(
+            onClick = onRestartGame,
             colors = ButtonDefaults.buttonColors(containerColor = AppBarColor)
         ) {
-            Text(text = "Play Again",
+            Text(
+                text = "Play Again",
                 color = Color.White
             )
         }

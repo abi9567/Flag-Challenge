@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.abi.flagchallenge.data.GameSettings
 import com.abi.flagchallenge.data.Questions
 import com.abi.flagchallenge.enums.CurrentScreen
+import com.abi.flagchallenge.extenstions.showToast
 import com.abi.flagchallenge.utils.DataStoreUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -22,7 +23,10 @@ import java.util.TimerTask
 import javax.inject.Inject
 
 @HiltViewModel
-class QuestionViewModel @Inject constructor(@ApplicationContext private val context : Context, private val dataStoreUtil: DataStoreUtil) : ViewModel() {
+class QuestionViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val dataStoreUtil: DataStoreUtil
+) : ViewModel() {
 
     private val tag = "QuestionViewModel"
     private val questions = Questions.QUESTIONS
@@ -30,35 +34,35 @@ class QuestionViewModel @Inject constructor(@ApplicationContext private val cont
     private val questionsIntervalInSeconds = 10
     private val singleQuestionTimeInLong = singleQuestionTimeInSeconds * 1000L
 
-    private var timer : Timer? = null
-    private lateinit var calendar : Calendar
+    private var timer: Timer? = null
+    private lateinit var calendar: Calendar
 
     private val _currentSelectedIndex = MutableStateFlow(value = 0)
-    val currentSelectedIndex : StateFlow<Int> = _currentSelectedIndex.asStateFlow()
+    val currentSelectedIndex: StateFlow<Int> = _currentSelectedIndex.asStateFlow()
 
     private val _isLoading = MutableStateFlow(value = false)
-    val isLoading : StateFlow<Boolean> = _isLoading.asStateFlow()
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
     private val _currentQuestion = MutableStateFlow<Questions?>(value = null)
-    val currentQuestion : StateFlow<Questions?> = _currentQuestion.asStateFlow()
+    val currentQuestion: StateFlow<Questions?> = _currentQuestion.asStateFlow()
 
     private val _timeRemainingForAnswer = MutableStateFlow(value = singleQuestionTimeInLong)
-    val timeRemainingForAnswer : StateFlow<Long> = _timeRemainingForAnswer.asStateFlow()
+    val timeRemainingForAnswer: StateFlow<Long> = _timeRemainingForAnswer.asStateFlow()
 
     private val _selectedOptionId = MutableStateFlow<Int?>(value = null)
-    val selectedOptionId : StateFlow<Int?> = _selectedOptionId.asStateFlow()
+    val selectedOptionId: StateFlow<Int?> = _selectedOptionId.asStateFlow()
 
     private val _nextQuestionCountdownTimer = MutableStateFlow<Int?>(value = null)
-    val nextQuestionCountdownTimer : StateFlow<Int?> = _nextQuestionCountdownTimer.asStateFlow()
+    val nextQuestionCountdownTimer: StateFlow<Int?> = _nextQuestionCountdownTimer.asStateFlow()
 
     private val _isGameFinished = MutableStateFlow(value = false)
-    val isGameFinished : StateFlow<Boolean> = _isGameFinished.asStateFlow()
+    val isGameFinished: StateFlow<Boolean> = _isGameFinished.asStateFlow()
 
     private val _gameScore = MutableStateFlow(value = 0)
-    val gameScore : StateFlow<Int> = _gameScore
+    val gameScore: StateFlow<Int> = _gameScore
 
     private val _currentScreen = MutableStateFlow(value = CurrentScreen.QuestionScreen)
-    val currentScreen : StateFlow<CurrentScreen> = _currentScreen.asStateFlow()
+    val currentScreen: StateFlow<CurrentScreen> = _currentScreen.asStateFlow()
 
     val gameSettings = dataStoreUtil.getGameSettings
 
@@ -67,11 +71,11 @@ class QuestionViewModel @Inject constructor(@ApplicationContext private val cont
         Log.d(tag, "Init Block")
     }
 
-    fun setSelectedOption(selectedOptionId : Int?) {
+    fun setSelectedOption(selectedOptionId: Int?) {
         _selectedOptionId.value = selectedOptionId
     }
 
-    private fun setCurrentScreen(screen : CurrentScreen) {
+    private fun setCurrentScreen(screen: CurrentScreen) {
         _currentScreen.value = screen
     }
 
@@ -79,7 +83,7 @@ class QuestionViewModel @Inject constructor(@ApplicationContext private val cont
         _gameScore.value += 1
     }
 
-    private fun isGameFinished() : Boolean {
+    private fun isGameFinished(): Boolean {
         _isGameFinished.value = _currentSelectedIndex.value.plus(1) == questions.size
         return _isGameFinished.value
     }
@@ -92,6 +96,7 @@ class QuestionViewModel @Inject constructor(@ApplicationContext private val cont
                 setLoading()
                 if (isGameFinished()) {
                     setCurrentScreen(screen = CurrentScreen.GameOverScreen)
+                    context.showToast(message = "Game Over")
                     return
                 }
                 setNextQuestionIndex()
@@ -130,7 +135,7 @@ class QuestionViewModel @Inject constructor(@ApplicationContext private val cont
     private fun startTimer() {
         if (timer != null) return
         timer = Timer()
-        timer?.schedule(object:TimerTask() {
+        timer?.schedule(object : TimerTask() {
             override fun run() {
                 if (_timeRemainingForAnswer.value > 0) {
                     _timeRemainingForAnswer.value -= 1000L
@@ -158,7 +163,8 @@ class QuestionViewModel @Inject constructor(@ApplicationContext private val cont
             if (gameSettings?.isGamePending != true) return@launch
             val calendar = Calendar.getInstance()
             val currentReEnterTime = calendar.timeInMillis
-            val differenceInSeconds = ((currentReEnterTime - (gameSettings.exitTime ?: 0L)) / 1000L).toInt()
+            val differenceInSeconds =
+                ((currentReEnterTime - (gameSettings.exitTime ?: 0L)) / 1000L).toInt()
             val numberOfQuestionsSkipped = differenceInSeconds / singleQuestionTimeInSeconds
             val nextIndexToStart = (gameSettings.currentIndex ?: 0) + numberOfQuestionsSkipped
             val isQuestionsCompletedWhileUserIsAway = nextIndexToStart > (questions.size - 1)
@@ -170,7 +176,10 @@ class QuestionViewModel @Inject constructor(@ApplicationContext private val cont
             }
             _currentSelectedIndex.value = nextIndexToStart
 //            setNextQuestion()
-            Log.d(tag, "Difference -> $differenceInSeconds, Skipped -> $numberOfQuestionsSkipped, last index -> ${gameSettings.currentIndex}, new index -> ${_currentSelectedIndex.value}")
+            Log.d(
+                tag,
+                "Difference -> $differenceInSeconds, Skipped -> $numberOfQuestionsSkipped, last index -> ${gameSettings.currentIndex}, new index -> ${_currentSelectedIndex.value}"
+            )
         }
     }
 
@@ -183,7 +192,8 @@ class QuestionViewModel @Inject constructor(@ApplicationContext private val cont
                 return@launch
             }
             calendar = Calendar.getInstance()
-            val gameSettings = GameSettings(exitTime = calendar.timeInMillis,
+            val gameSettings = GameSettings(
+                exitTime = calendar.timeInMillis,
                 isGamePending = true,
                 currentIndex = _currentSelectedIndex.value,
                 currentScore = _gameScore.value
