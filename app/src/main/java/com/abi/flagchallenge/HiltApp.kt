@@ -10,4 +10,5 @@ class HiltApp : Application() {
         super.onCreate()
         Log.d("HiltApp", "OnCreate")
     }
+
 }

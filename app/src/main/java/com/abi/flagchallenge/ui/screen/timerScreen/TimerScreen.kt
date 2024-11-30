@@ -1,11 +1,63 @@
 package com.abi.flagchallenge.ui.screen.timerScreen
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
+import androidx.navigation.NavController
+import com.abi.flagchallenge.R
+import com.abi.flagchallenge.enums.TimerCurrentScreen
+import com.abi.flagchallenge.extenstions.navigateWithPop
+import com.abi.flagchallenge.navigation.Screens
 import com.abi.flagchallenge.ui.common.CustomScaffold
+import com.abi.flagchallenge.ui.common.HeightSpacer
+import com.abi.flagchallenge.ui.common.WidthSpacer
+import com.abi.flagchallenge.ui.theme.AppBarColor
 
 @Composable
-fun TimerScreen() {
-    CustomScaffold { paddingValues ->
+fun TimerScreen(
+    navController: NavController,
+    viewModel: TimerScreenViewModel
+) {
+    val currentScreen by viewModel.currentScreen.collectAsState()
+    val remainingTime by viewModel.countDownTimer.collectAsState()
 
+    LaunchedEffect(key1 = remainingTime) {
+        if (remainingTime == 0L) {
+            navController.navigateWithPop(route = Screens.QuestionScreen.route,
+                popUpRoute = Screens.TimerScreen.route
+            )
+        }
+    }
+
+    CustomScaffold { paddingValues ->
+        Column(modifier = Modifier
+            .padding(paddingValues)
+            .padding(top = dimensionResource(id = R.dimen.margin_xl))
+            .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            when(currentScreen) {
+                TimerCurrentScreen.TimeSelectionScreen -> TimePickerView(viewModel = viewModel)
+                TimerCurrentScreen.CountDownScreen -> CountDownView(viewModel = viewModel)
+            }
+        }
     }
 }

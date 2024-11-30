@@ -28,12 +28,12 @@ fun CustomScaffold(
         Box(modifier = Modifier
             .background(color = AppBarColor)
             .statusBarsPadding()
+            .padding(bottom = dimensionResource(id = R.dimen.margin_large))
             .fillMaxWidth(),
             contentAlignment = Alignment.Center
         ) {
             Text(text = stringResource(id = R.string.app_name),
                 style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.margin_normal)),
                 color = Color.White
             )
         }

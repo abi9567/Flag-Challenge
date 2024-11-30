@@ -6,7 +6,12 @@
     <string name="hour">Hour</string>
     <string name="minute">Minute</string>
     <string name="second">Second</string>
-    <string name="challenge_will_start_in">Challenge will start in %s</string>
+    <string name="challenge_will_start_in">Challenge will start in</string>
+
+    <!--Question Screen !-->
+    <string name="guess_the_flag">Guess the country from flag?</string>
+    <string name="right">Right Answer</string>
+    <string name="wrong">Wrong Answer</string>
 
     <!--Result Screen !-->
     <string name="game_over">Game Over</string>
